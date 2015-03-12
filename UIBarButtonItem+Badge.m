@@ -112,8 +112,10 @@ NSString const *UIBarButtonItem_badgeValueKey = @"UIBarButtonItem_badgeValueKey"
 // Handle the badge changing value
 - (void)updateBadgeValueAnimated:(BOOL)animated
 {
+    BOOL shouldAnimate = animated && self.shouldAnimateBadge && ![self.badge.text isEqualToString:self.badgeValue];
+
     // Bounce animation on badge if value changed and if animation authorized
-    if (animated && self.shouldAnimateBadge && ![self.badge.text isEqualToString:self.badgeValue]) {
+    if (shouldAnimate) {
         CABasicAnimation * animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
         [animation setFromValue:[NSNumber numberWithFloat:1.5]];
         [animation setToValue:[NSNumber numberWithFloat:1]];
@@ -126,7 +128,7 @@ NSString const *UIBarButtonItem_badgeValueKey = @"UIBarButtonItem_badgeValueKey"
     self.badge.text = self.badgeValue;
     
     // Animate the size modification if needed
-    NSTimeInterval duration = animated ? self.badgeAnimationDuration : 0;
+    NSTimeInterval duration = shouldAnimate ? self.badgeAnimationDuration : 0;
     [UIView animateWithDuration:duration animations:^{
         [self updateBadgeFrame];
     }];
