@@ -1,5 +1,5 @@
 //
-//  UIBarButtonItem+Badge.m
+//  UIButton+Badge.m
 //  therichest
 //
 //  Created by Mike on 2014-05-05.
