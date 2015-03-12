@@ -122,6 +122,7 @@ NSString const *UIBarButtonItem_badgeValueKey = @"UIBarButtonItem_badgeValueKey"
         [animation setDuration:self.badgeAnimationDuration];
         [animation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:.4f :1.3f :1.f :1.f]];
         [self.badge.layer addAnimation:animation forKey:@"bounceAnimation"];
+        [self.customView.layer addAnimation:animation forKey:@"bounceAnimation"];
     }
     
     // Set the new value
