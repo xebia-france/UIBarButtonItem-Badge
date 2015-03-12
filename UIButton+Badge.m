@@ -17,6 +17,7 @@ NSString const *UIButton_badgePaddingKey = @"UIButton_badgePaddingKey";
 NSString const *UIButton_badgeMinSizeKey = @"UIButton_badgeMinSizeKey";
 NSString const *UIButton_badgeOriginXKey = @"UIButton_badgeOriginXKey";
 NSString const *UIButton_badgeOriginYKey = @"UIButton_badgeOriginYKey";
+NSString const *UIButton_badgeAnimationDuration = @"UIButton_badgeAnimationDuration";
 NSString const *UIButton_shouldHideBadgeAtZeroKey = @"UIButton_shouldHideBadgeAtZeroKey";
 NSString const *UIButton_shouldAnimateBadgeKey = @"UIButton_shouldAnimateBadgeKey";
 NSString const *UIButton_badgeValueKey = @"UIButton_badgeValueKey";
@@ -25,6 +26,7 @@ NSString const *UIButton_badgeValueKey = @"UIButton_badgeValueKey";
 
 @dynamic badgeValue, badgeBGColor, badgeTextColor, badgeFont;
 @dynamic badgePadding, badgeMinSize, badgeOriginX, badgeOriginY;
+@dynamic badgeAnimationDuration;
 @dynamic shouldHideBadgeAtZero, shouldAnimateBadge;
 
 - (void)badgeInit
@@ -37,6 +39,7 @@ NSString const *UIButton_badgeValueKey = @"UIButton_badgeValueKey";
     self.badgeMinSize   = 8;
     self.badgeOriginX   = self.frame.size.width - self.badge.frame.size.width/2;
     self.badgeOriginY   = -4;
+    self.badgeAnimationDuration = 0.2;
     self.shouldHideBadgeAtZero = YES;
     self.shouldAnimateBadge = YES;
     // Avoids badge to be clipped when animating its scale
@@ -95,7 +98,7 @@ NSString const *UIButton_badgeValueKey = @"UIButton_badgeValueKey";
         CABasicAnimation * animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
         [animation setFromValue:[NSNumber numberWithFloat:1.5]];
         [animation setToValue:[NSNumber numberWithFloat:1]];
-        [animation setDuration:0.2];
+        [animation setDuration:self.badgeAnimationDuration];
         [animation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:.4f :1.3f :1.f :1.f]];
         [self.badge.layer addAnimation:animation forKey:@"bounceAnimation"];
     }
@@ -104,7 +107,7 @@ NSString const *UIButton_badgeValueKey = @"UIButton_badgeValueKey";
     self.badge.text = self.badgeValue;
     
     // Animate the size modification if needed
-    NSTimeInterval duration = animated ? 0.2 : 0;
+    NSTimeInterval duration = animated ? self.badgeAnimationDuration : 0;
     [UIView animateWithDuration:duration animations:^{
         [self updateBadgeFrame];
     }];
@@ -254,6 +257,16 @@ NSString const *UIButton_badgeValueKey = @"UIButton_badgeValueKey";
     if (self.badge) {
         [self updateBadgeFrame];
     }
+}
+
+// Value for the badge animation duration
+-(CGFloat) badgeAnimationDuration {
+    NSNumber *number = objc_getAssociatedObject(self, &UIButton_badgeAnimationDuration);
+    return number.floatValue;
+}
+-(void) setBadgeAnimationDuration:(CGFloat)animationDuration {
+    NSNumber *number = [NSNumber numberWithDouble:animationDuration];
+    objc_setAssociatedObject(self, &UIButton_badgeAnimationDuration, number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 // In case of numbers, remove the badge when reaching zero

@@ -27,6 +27,8 @@
 // Values for offseting the badge over the BarButtonItem you picked
 @property (nonatomic) CGFloat badgeOriginX;
 @property (nonatomic) CGFloat badgeOriginY;
+// Badge animation duration in sec
+@property (nonatomic) CGFloat badgeAnimationDuration;
 // In case of numbers, remove the badge when reaching zero
 @property BOOL shouldHideBadgeAtZero;
 // Badge has a bounce animation when value changes
